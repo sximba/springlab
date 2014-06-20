@@ -17,3 +17,6 @@
 
 These assumptions are not entirely necessary, model attributes can be changed
 to accomodate larger fields
+
+## Things to note:
+* Application is small. Function-based views favored over cleaner class-based views
