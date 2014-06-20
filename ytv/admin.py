@@ -1,3 +1,7 @@
 from django.contrib import admin
+from ytv.models import Video
 
-# Register your models here.
+class VideoAdmin(admin.ModelAdmin):
+    fields = ['ytid', 'title', 'description', 'url']
+
+admin.site.register(Video, VideoAdmin)
