@@ -5,6 +5,7 @@ class Video(models.Model):
     ytid = models.CharField('YouTube ID', max_length = 11)
     title = models.CharField(max_length = 300)
     description = models.TextField()
+    post_date = models.DateTimeField('Posted on')
 
     def __unicode__(self):
         return self.title

@@ -6,7 +6,7 @@ from ytv.models import Video
 
 def index(request):
     if request.method == "GET":
-        video_list = Video.objects.all()
+        video_list = Video.objects.all().order_by('-post_date')
         paginator = Paginator(video_list, 10)
         page = request.GET.get('page')
 
