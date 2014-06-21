@@ -14,6 +14,7 @@
 * URLs will not exceed 1000 characters
 * Titles will not exceed 300 characters
 * YouTube video IDs will remain 11 characters
+* Videos with missing attributes are not interesting
 
 These assumptions are not entirely necessary, model attributes can be changed
 to accomodate larger fields

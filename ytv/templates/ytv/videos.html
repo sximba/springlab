@@ -1,4 +1,21 @@
+<html>
+<head>
+<title>Springlab - YTv App</title>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'ytv/style.css' %}" />
+</head>
+<body>
+
 <h1>Springlab - YTv</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'ytv:index' %}" method="post">
+{% csrf_token %}
+<label for="yturl">YouTube url:</label>
+<input type="text" name="yturl" id="yturl" value="" />
+<input type="submit" value="Post" />
+</form>
 
 {% if video_list %}
 <ul>
@@ -6,6 +23,8 @@
     <li>{{ video.title }}</li>
 {% endfor %}
 </ul>
+{% else %}
+<p>No videos, yet. Start posting!</p>
 {% endif %}
 
 <div class="pagination">
@@ -14,12 +33,17 @@
             <a href="?page={{ video_list.previous_page_number }}">previous</a>
         {% endif %}
         
+        {% if video_list %}
         <span class="current">
             Page {{ video_list.number }} of {{ video_list.paginator.num_pages }}
         </span>
+        {% endif %}
 
         {% if video_list.has_next %}
             <a href="?page={{ video_list.next_page_number }}">next</a>
         {% endif %}
     </span>
 </div>
+
+</body>
+</html>
