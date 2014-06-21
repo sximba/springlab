@@ -1,0 +1,9 @@
+<h1>Springlab - YTv</h1>
+
+{% if video_list %}
+<ul>
+{% for video in video_list %}
+    <li>{{ video.title }}</li>
+{% endfor %}
+</ul>
+{% endif %}
