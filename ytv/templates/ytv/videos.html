@@ -7,3 +7,19 @@
 {% endfor %}
 </ul>
 {% endif %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if video_list.has_previous %}
+            <a href="?page={{ video_list.previous_page_number }}">previous</a>
+        {% endif %}
+        
+        <span class="current">
+            Page {{ video_list.number }} of {{ video_list.paginator.num_pages }}
+        </span>
+
+        {% if video_list.has_next %}
+            <a href="?page={{ video_list.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
