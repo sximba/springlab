@@ -3,20 +3,22 @@
 <title>Springlab - YTv App</title>
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'ytv/style.css' %}" />
+<script type="text/javascript" language="javascript" src="{% static 'ytv/javascript/jquery.js' %}"></script>
+<script type="text/javascript" language="javascript" src="{% static 'ytv/javascript/custom.js' %}"></script>
 </head>
 <body>
 
 <h1>Springlab - YTv</h1>
 
-{% if messages %}
 <ul class-"messages">
+    {% if messages %}
     {% for message in messages %}
         <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
+    {% endif %}
 </ul>
-{% endif %}
 
-<form action="{% url 'ytv:index' %}" method="post">
+<form id="post_form" action="{% url 'ytv:index' %}" method="post">
     {% csrf_token %}
     <label for="yturl">YouTube url:</label>
     <input type="text" name="yturl" id="yturl" value="" />
@@ -24,9 +26,9 @@
 </form>
 
 {% if video_list %}
-<ul>
+<ul id="video_list">
 {% for video in video_list %}
-    <li>{{ video.title }}</li>
+    <li>{{ video.title }}
     <span>
     <form action="{% url 'ytv:destroy' video.id %}" method="POST">
         {% csrf_token %}
@@ -34,6 +36,7 @@
         <input type="submit" value="delete" />
     </form>
     </span>
+    </li>
 {% endfor %}
 </ul>
 {% else %}

@@ -4,13 +4,15 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.contrib import messages
+import json
 
 from ytv import youtube, msgs
 from ytv.models import Video
 
 def index(request):
     if request.method == "POST":
-        yturl = request.POST['yturl']
+        _data = json.loads(request.body)
+        yturl = _data["url"]
         details = youtube.get_details(yturl)
         if details == None:
             messages.error(request, msgs.unreachable)
@@ -25,7 +27,8 @@ def index(request):
                 v = Video(url=yturl, ytid=_ytid, title=_title, description=_descr, post_date=pt)
                 v.save()
                 messages.success(request, msgs.added + " " + v.title)
-        return HttpResponseRedirect(reverse('ytv:index'))
+        context = {"video" : v}
+        return render(request, 'ytv/posted.html', context)
     else:
         context = {"video_list":paginate(request)}
         return render(request, 'ytv/videos.html', context)
