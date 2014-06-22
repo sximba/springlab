@@ -11,24 +11,29 @@ from ytv.models import Video
 
 def index(request):
     if request.method == "POST":
+        _response = {}
+        _messages = []
         _data = json.loads(request.body)
         yturl = _data["url"]
         details = youtube.get_details(yturl)
         if details == None:
-            messages.error(request, msgs.unreachable)
+            _messages.append(msgs.unreachable)
         else:
             _ytid, _title, _descr = details
             if _title == None:
-                messages.error(request, msgs.no_title)
+                _messages.append(msgs.no_title)
             elif _descr == None:
-                messages.error(request, msgs.no_descr)
+                _messages.append(msgs.no_descr)
             else:
                 pt = timezone.now()
                 v = Video(url=yturl, ytid=_ytid, title=_title, description=_descr, post_date=pt)
                 v.save()
-                messages.success(request, msgs.added + " " + v.title)
+                _messages.append(msgs.added + " " + v.title)
         context = {"video" : v}
-        return render(request, 'ytv/posted.html', context)
+        _response["messages"] = render(request, 'ytv/messages.html',{"msgs":_messages}).content
+        _response["response"] = render(request, 'ytv/posted.html', context).content
+        _response["paginate"] = render(request, 'ytv/paginate.html', {"video_list": paginate(request)}).content
+        return HttpResponse(json.dumps(_response), mimetype="application/json")
     else:
         context = {"video_list":paginate(request)}
         return render(request, 'ytv/videos.html', context)

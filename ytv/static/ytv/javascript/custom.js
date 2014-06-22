@@ -4,7 +4,7 @@ $(document).ready(function(){
         var yturl = $('#yturl').val()
         var post_data = '{"url":"'+yturl+'"}'
         var url = $('#post_form').attr("action")
-        $.post(url, post_data, callback)
+        $.post(url, post_data, callback, "json")
         return false;
     });
     return;
@@ -12,12 +12,28 @@ $(document).ready(function(){
 
 var callback = function(data)
 {
-    var s = $('#video_list').children().size()
-    if(s > 9)
+    if(data.response)
     {
-        $('#video_list li:last').remove()
+        var s = $('#video_list').children().size()
+        if(s > 9)
+        {
+            $('#video_list li:last').remove()
+        }
+        $('#video_list').prepend(data.response)
+        $('#yturl').val('')
     }
-    $('#video_list').prepend(data)
+    
+    if(data.messages)
+    {
+        $('#messages').empty()
+        $('#messages').append(data.messages)
+    }
+
+    if(data.paginate)
+    {
+        $('#step-links').empty()
+        $('#step-links').append(data.paginate)
+    }
 }
 
 function getCookie(name)
