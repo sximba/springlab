@@ -10,6 +10,11 @@ $(document).ready(function(){
     return;
 });
 
+var delete_video = function(e)
+{
+    return false;
+}
+
 var callback = function(data)
 {
     if(data.response)

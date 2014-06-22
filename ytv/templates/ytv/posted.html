@@ -1,9 +1,4 @@
-<li>{{ video.title }}
-<span>
-    <form action="{% url 'ytv:destroy' video.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="_method" value="DELETE" />
-        <input type="submit" value="delete" />
-    </form>
-</span>
+<li>
+<span class="vid_name">{{ video.title }}</span>
+<span><a href="{% url 'ytv:destroy' video.id %}" onclick="return delete_video()">delete</a></span>
 </li>
