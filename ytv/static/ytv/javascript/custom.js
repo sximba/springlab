@@ -4,18 +4,37 @@ $(document).ready(function(){
         var yturl = $('#yturl').val()
         var post_data = '{"url":"'+yturl+'"}'
         var url = $('#post_form').attr("action")
-        $.post(url, post_data, callback, "json")
+        $.post(url, post_data, callback_post, "json")
         return false;
     });
+    $('#video_list').on("click", ".delete_link", delete_video)
     return;
 });
 
 var delete_video = function(e)
 {
+    var post_data = '{"_method":"DELETE"}'
+    var url = e.target.getAttribute("href")
+    $.post(url, post_data, callback_delete, "json")
     return false;
 }
 
-var callback = function(data)
+var callback_delete = function(data)
+{
+    if(data.response)
+    {
+        var id = "#"+data.response
+        $(id).remove()
+    }
+
+    if(data.messages)
+    {
+        $('#messages').empty()
+        $('#messages').append(data.messages)
+    }
+}
+
+var callback_post = function(data)
 {
     if(data.response)
     {

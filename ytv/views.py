@@ -39,36 +39,43 @@ def index(request):
         return render(request, 'ytv/videos.html', context)
 
 def destroy(request, video_id):
+    _response = {}
+    _messages = []
     try:
         video_id = int(video_id)
     except ValueError:
-        message.error(request, msgs.nan_id)
+        _messages.append(msgs.nan_id)
     else:
         if request.method == "POST":
             try:
-                if request.POST["_method"] == "DELETE":
+                _data = json.loads(request.body)
+                print _data["_method"]
+                if _data["_method"] == "DELETE":
                     return delete_video(request, video_id)
                 else:
-                    messages.error(request, msgs.lost)
-            except KeyError:
-                messages.error(request, msgs.lost)
+                    _messages.append(msgs.lost)
+            except ValueError:
+                _messages.append(msgs.lost)
         else:
-            messages.error(request, msgs.lost)
-    context = {"video_list" : paginate(request)}
-    return render(request, 'ytv/videos.html', context)
+            _messages.append(msgs.lost)
+    _response["messages"] = render(request, 'ytv/messages.html',{"msgs":_messages}).content
+    return HttpResponse(json.dumps(_response), mimetype="application/json")
 
 def delete_video(request, video_id):
+    _response = {}
+    _messages = []
     try:
         v = Video.objects.get(pk=video_id)
         v.delete()
-        messages.error(request, msgs.deleted + " " + v.title)
+        _messages.append(msgs.deleted + " " + v.title)
     except Video.DoesNotExist:
-        messages.error(request, msgs.not_exist)
+        _messages.append(msgs.not_exist)
     except Exception:
-        messages.error(request, msgs.not_deleted)
+        _messages.append(msgs.not_deleted)
 
-    context = {"video_list" : paginate(request)}
-    return render(request, 'ytv/videos.html', context)
+    _response["messages"] = render(request, 'ytv/messages.html',{"msgs":_messages}).content
+    _response["response"] = str(video_id)
+    return HttpResponse(json.dumps(_response), mimetype="application/json")
         
     
 def paginate(request):

@@ -1,4 +1,4 @@
-<li>
+<li id="{{ video.id }}">
 <span class="vid_name">{{ video.title }}</span>
-<span><a href="{% url 'ytv:destroy' video.id %}" onclick="return delete_video()">delete</a></span>
+<span><a href="{% url 'ytv:destroy' video.id %}" class="delete_link">delete</a></span>
 </li>
