@@ -24,14 +24,45 @@ def index(request):
                 pt = timezone.now()
                 v = Video(url=yturl, ytid=_ytid, title=_title, description=_descr, post_date=pt)
                 v.save()
+                messages.success(request, msgs.added + " " + v.title)
         return HttpResponseRedirect(reverse('ytv:index'))
     else:
         context = {"video_list":paginate(request)}
         return render(request, 'ytv/videos.html', context)
 
 def destroy(request, video_id):
-    return HttpResponse("You are deleting video %s." % video_id)
-            
+    try:
+        video_id = int(video_id)
+    except ValueError:
+        message.error(request, msgs.nan_id)
+    else:
+        if request.method == "POST":
+            try:
+                if request.POST["_method"] == "DELETE":
+                    return delete_video(request, video_id)
+                else:
+                    messages.error(request, msgs.lost)
+            except KeyError:
+                messages.error(request, msgs.lost)
+        else:
+            messages.error(request, msgs.lost)
+    context = {"video_list" : paginate(request)}
+    return render(request, 'ytv/videos.html', context)
+
+def delete_video(request, video_id):
+    try:
+        v = Video.objects.get(pk=video_id)
+        v.delete()
+        messages.error(request, msgs.deleted + " " + v.title)
+    except Video.DoesNotExist:
+        messages.error(request, msgs.not_exist)
+    except Exception:
+        messages.error(request, msgs.not_deleted)
+
+    context = {"video_list" : paginate(request)}
+    return render(request, 'ytv/videos.html', context)
+        
+    
 def paginate(request):
     video_list = Video.objects.all().order_by('-post_date')
     paginator = Paginator(video_list, 10)

@@ -27,6 +27,13 @@
 <ul>
 {% for video in video_list %}
     <li>{{ video.title }}</li>
+    <span>
+    <form action="{% url 'ytv:destroy' video.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="_method" value="DELETE" />
+        <input type="submit" value="delete" />
+    </form>
+    </span>
 {% endfor %}
 </ul>
 {% else %}
