@@ -1,3 +1,36 @@
-li a{
+li a.delete_link{
     color: green;
+}
+
+li a.link{
+    color: blue;
+}
+
+.description{
+    font-family: helvetica;
+    font-size: 11pt;
+    font-weight: thin;
+    text-align: justify;
+}
+
+.vid_title{
+    font-weight: bold;
+}
+
+#video_list, #messages{
+    list-style: none;
+    width: 60%;
+}
+
+#video_list{
+    float: clear;
+}
+
+.vid_item{
+    margin-top: 10px;
+}
+
+#header, h1, p{
+    width:60%;
+    margin-left: 40px;
 }

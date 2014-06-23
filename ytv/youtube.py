@@ -7,7 +7,7 @@ def text_with_newlines(elem):
         if isinstance(e, basestring):
             text += e.strip()
         elif e.name == 'br':
-            text += '\n'
+            text += ' - '
     return text
 
 def get_ytid(_url):

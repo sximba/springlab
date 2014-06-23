@@ -18,22 +18,27 @@
     {% endif %}
 </ul>
 
+<div id="header">
+<div id="form_div">
 <form id="post_form" action="{% url 'ytv:index' %}" method="post">
     {% csrf_token %}
     <label for="yturl">YouTube url:</label>
     <input type="text" name="yturl" id="yturl" value="" />
     <input type="submit" value="Post" />
 </form>
+</div>
+<div id="wait">Please wait...</div>
+</div>
 
-{% if video_list %}
 <ul id="video_list">
+{% if video_list %}
 {% for video in video_list %}
     {% include "ytv/posted.html" with video=video %}
 {% endfor %}
-</ul>
 {% else %}
-<p>No videos, yet. Start posting!</p>
+<p id="holder">No videos, yet. Start posting!</p>
 {% endif %}
+</ul>
 
 <div class="pagination">
     <span id="step-links">

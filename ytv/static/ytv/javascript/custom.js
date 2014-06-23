@@ -4,10 +4,12 @@ $(document).ready(function(){
         var yturl = $('#yturl').val()
         var post_data = '{"url":"'+yturl+'"}'
         var url = $('#post_form').attr("action")
+        $('#wait').show()
         $.post(url, post_data, callback_post, "json")
         return false;
     });
     $('#video_list').on("click", ".delete_link", delete_video)
+    $('#wait').hide()
     return;
 });
 
@@ -15,6 +17,7 @@ var delete_video = function(e)
 {
     var post_data = '{"_method":"DELETE"}'
     var url = e.target.getAttribute("href")
+    $('#wait').show()
     $.post(url, post_data, callback_delete, "json")
     return false;
 }
@@ -32,12 +35,14 @@ var callback_delete = function(data)
         $('#messages').empty()
         $('#messages').append(data.messages)
     }
+    $('#wait').hide()
 }
 
 var callback_post = function(data)
 {
     if(data.response)
     {
+        $('#holder').remove()
         var s = $('#video_list').children().size()
         if(s > 9)
         {
@@ -58,6 +63,7 @@ var callback_post = function(data)
         $('#step-links').empty()
         $('#step-links').append(data.paginate)
     }
+    $('#wait').hide()
 }
 
 function getCookie(name)

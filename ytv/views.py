@@ -49,7 +49,6 @@ def destroy(request, video_id):
         if request.method == "POST":
             try:
                 _data = json.loads(request.body)
-                print _data["_method"]
                 if _data["_method"] == "DELETE":
                     return delete_video(request, video_id)
                 else:
