@@ -21,3 +21,8 @@ to accomodate larger fields
 
 ## Things to note:
 * Application is small. Function-based views favored over cleaner class-based views
+
+* Application uses the Django web framework, Mechanize and BeautifulSoup4
+* To run quickly use (in root folder):
+python manage.py syncdb
+python manage.py runserver
